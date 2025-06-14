@@ -1,38 +1,172 @@
+/* App container and global layout */
 .App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: #fff; /* White background */
+  border-bottom: 1px solid #e7e7e7; /* Subtle border */
+  padding: 0.5rem 1rem;
+  position: fixed; /* Stick to the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it's above other content */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.navbar .container-fluid { /* From Navbar.js structure */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px; /* Match .container max-width */
+  margin: 0 auto; /* Center the container */
+  padding: 0 15px; /* Padding for the container */
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+}
+.navbar-brand:hover {
+  color: #0056b3;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  list-style: none; /* Ensure ul/li styles from index.css don't interfere badly */
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.nav-item {
+  margin-left: 1rem;
+}
+
+.nav-link {
+  color: #555;
+  padding: 0.5rem;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
+}
+
+.nav-link:hover,
+.nav-link.active { /* Assuming 'active' class might be used by NavLink */
+  color: #007bff;
+}
+
+.navbar-nav .btn-link.nav-link { /* For logout button */
+  color: #dc3545; /* Danger color for logout */
+}
+.navbar-nav .btn-link.nav-link:hover {
+  color: #a71d2a;
+}
+
+
+/* Content area - ensure it's not obscured by fixed navbar */
+.container.mt-3 { /* class used in App.js for main content area */
+  padding-top: 20px; /* Add some padding from the navbar */
+  flex-grow: 1; /* Allow content to grow and push footer down */
+}
+
+
+/* Navbar toggler for responsiveness (basic) */
+.navbar-toggler {
+  display: none; /* Hidden by default on larger screens */
+  background: none;
+  border: 1px solid #ccc;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+/* Responsive Navbar: Stack links on smaller screens */
+@media (max-width: 768px) {
+  .navbar .container-fluid {
+    flex-direction: column; /* Stack brand and nav sections */
+    align-items: flex-start;
+  }
+
+  .navbar-nav {
+    flex-direction: column; /* Stack nav items */
+    width: 100%;
+  }
+
+  .nav-item {
+    margin-left: 0;
+    width: 100%;
+    text-align: left;
+    border-top: 1px solid #eee; /* Separator for stacked items */
+  }
+  .nav-item:first-child {
+    border-top: none;
+  }
+
+  .navbar-nav .nav-link {
+    display: block;
+    width: 100%;
+  }
+
+  .navbar-nav.ms-auto { /* If right-aligned items exist */
+    margin-left: 0 !important;
+  }
+
+  /* Basic toggler functionality would require JS or checkbox trick */
+  /* For now, we'll just stack them. A real toggler is more complex. */
+  /* The Bootstrap classes in Navbar.js hint at a more complex toggler. */
+  /* These styles provide a basic fallback if that JS isn't active. */
+}
+
+/* General page styling */
+.page-title {
+  color: #333;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Login/Register Page Specifics */
+.auth-card {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.auth-card .card-title {
+  margin-bottom: 1.5rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Loading and Error states styling */
+.loading-message, .error-message {
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.loading-message {
+  color: #007bff;
+}
+.error-message { /* Already styled by .alert .alert-danger */
+  /* color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px; */
+}
+
+/* Ensure main content is pushed by footer */
+#root {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App > .container.mt-3 { /* From App.js main content wrapper */
+  flex: 1; /* Make content area take up available space */
 }

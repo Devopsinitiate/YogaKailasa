@@ -24,25 +24,25 @@ function Poses() {
       });
   }, []);
 
-  if (loading) return <div>Loading poses...</div>;
-  if (error) return <div>Error loading poses: {error}</div>;
+  if (loading) return <div className="loading-message">Loading poses...</div>;
+  if (error) return <div className="alert alert-danger error-message">Error loading poses: {error}</div>;
 
   return (
-    <div>
-      <h2>Yoga Poses</h2>
+    <div className="container mt-3">
+      <h2 className="page-title">Yoga Poses</h2>
       {poses.length === 0 ? (
-        <p>No poses found.</p>
+        <p className="text-center">No poses found.</p>
       ) : (
-        <ul>
+        <div className="item-list">
           {poses.map(pose => (
-            <li key={pose.id}>
+            <div key={pose.id} className="item-card">
               <h3>{pose.name}</h3>
+              {pose.image_url && <img src={pose.image_url} alt={pose.name} />}
               <p>{pose.description}</p>
               <p><strong>Difficulty:</strong> {pose.difficulty}</p>
-              {pose.image_url && <img src={pose.image_url} alt={pose.name} style={{maxWidth: '200px'}} />}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

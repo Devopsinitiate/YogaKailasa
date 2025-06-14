@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pose, BreathingExercise, Course
+from .models import Pose, BreathingExercise, Course, UserProfile # Ensure UserProfile is imported
 from django.contrib.auth.models import User
 
 # Serializer for User (from previous step, kept here for cohesiveness if needed, or can be in views.py)
@@ -43,6 +43,38 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'title', 'description', 'poses', 'breathing_exercises', 'price', 'pose_ids', 'breathing_exercise_ids']
         read_only_fields = ['poses', 'breathing_exercises'] # Display these as nested, but write using IDs
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    # Making user read-only as it's set by the system (linked one-to-one)
+    user = UserSerializer(read_only=True)
+    # enrolled_courses = CourseSerializer(many=True, read_only=True)
+    # Simpler representation for enrolled_courses to avoid deep nesting if not needed for profile view
+    enrolled_courses_details = CourseSerializer(source='enrolled_courses', many=True, read_only=True)
+
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user', 'enrolled_courses', 'enrolled_courses_details']
+        # enrolled_courses is writeable by ID (e.g. for admin or specific updates)
+        # but typically updated via payment verification logic rather than direct profile update.
+        # For this serializer, let's make enrolled_courses itself read-only for direct profile updates
+        # and rely on other mechanisms (like payment verification) to modify it.
+        read_only_fields = ['user', 'enrolled_courses', 'enrolled_courses_details']
+
+# To make enrolled_courses writeable in UserProfileSerializer if needed (e.g. for admin):
+# class UserProfileSerializer(serializers.ModelSerializer):
+#     user = UserSerializer(read_only=True)
+#     enrolled_courses = serializers.PrimaryKeyRelatedField(
+#         many=True,
+#         queryset=Course.objects.all(),
+#         required=False
+#     )
+#     enrolled_courses_details = CourseSerializer(source='enrolled_courses', many=True, read_only=True)
+
+#     class Meta:
+#         model = UserProfile
+#         fields = ['id', 'user', 'enrolled_courses', 'enrolled_courses_details']
+#         read_only_fields = ['user', 'enrolled_courses_details']
 
     def create(self, validated_data):
         # Pop IDs for ManyToMany fields before creating the Course instance

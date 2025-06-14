@@ -24,24 +24,24 @@ function Breathing() {
       });
   }, []);
 
-  if (loading) return <div>Loading breathing exercises...</div>;
-  if (error) return <div>Error loading breathing exercises: {error}</div>;
+  if (loading) return <div className="loading-message">Loading breathing exercises...</div>;
+  if (error) return <div className="alert alert-danger error-message">Error loading breathing exercises: {error}</div>;
 
   return (
-    <div>
-      <h2>Breathing Exercises</h2>
+    <div className="container mt-3">
+      <h2 className="page-title">Breathing Exercises</h2>
       {exercises.length === 0 ? (
-        <p>No breathing exercises found.</p>
+        <p className="text-center">No breathing exercises found.</p>
       ) : (
-        <ul>
+        <div className="item-list">
           {exercises.map(exercise => (
-            <li key={exercise.id}>
+            <div key={exercise.id} className="item-card">
               <h3>{exercise.name}</h3>
               <p>{exercise.description}</p>
               <p><strong>Duration:</strong> {exercise.duration_minutes} minutes</p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

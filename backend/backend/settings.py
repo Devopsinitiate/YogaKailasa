@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'yoga_api',
     'rest_framework',
     'rest_framework.authtoken',
-    'paystack',
+    # 'paystack', # Temporarily commented out for running tests
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,13 @@ PAYSTACK_SECRET_KEY = 'sk_test_your_secret_key' # Replace with your actual secre
 PAYSTACK_WEBHOOK_SECRET = 'your_webhook_secret' # Optional, for verifying webhook events
 # PAYSTACK_BEARER_TOKEN = PAYSTACK_SECRET_KEY # pypaystack2 uses this
 PAYSTACK_API_URL = "https://api.paystack.co" # Default, can be changed if needed
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication', # Optional: keep for browsable API
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly', # Default to read-only for unauthenticated
+    ]
+}

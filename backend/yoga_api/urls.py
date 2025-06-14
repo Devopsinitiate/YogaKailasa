@@ -1,9 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    UserRegistrationView, UserLoginView,
+    UserRegistrationView, UserLoginView, UserLogoutView,
     PoseViewSet, BreathingExerciseViewSet, CourseViewSet,
-    InitiatePaymentView, VerifyPaymentView
+    InitiatePaymentView, VerifyPaymentView,
+    UserProfileDetailView, UserEnrolledCoursesListView
 )
 
 # Create a router and register our viewsets with it.
@@ -17,6 +18,9 @@ router.register(r'courses', CourseViewSet, basename='course')
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='user-register'),
     path('login/', UserLoginView.as_view(), name='user-login'),
+    path('logout/', UserLogoutView.as_view(), name='user-logout'),
+    path('profile/', UserProfileDetailView.as_view(), name='user-profile-detail'),
+    path('profile/enrolled-courses/', UserEnrolledCoursesListView.as_view(), name='user-enrolled-courses'),
     path('payment/initiate/', InitiatePaymentView.as_view(), name='initiate-payment'),
     path('payment/verify/', VerifyPaymentView.as_view(), name='verify-payment'),
     path('', include(router.urls)), # Include the router URLs

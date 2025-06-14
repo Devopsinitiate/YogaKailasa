@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Pose(models.Model):
     DIFFICULTY_CHOICES = [
@@ -31,3 +32,13 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    enrolled_courses = models.ManyToManyField(Course, related_name='enrolled_users', blank=True)
+    # Add other fields here if needed in the future, e.g.:
+    # profile_picture_url = models.URLField(max_length=255, blank=True, null=True)
+    # bio = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"

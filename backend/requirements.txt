@@ -1,0 +1,7 @@
+Django>=3.2 # Or a more specific version if known, e.g., Django~=5.2
+django-paystack==1.0.0
+pypaystack2==2.0.3
+djangorestframework>=3.14 # Or a more specific version
+whitenoise>=6.0
+# Add other backend dependencies like djangorestframework-simplejwt if using JWT, etc.
+# For now, focusing on the problematic ones.

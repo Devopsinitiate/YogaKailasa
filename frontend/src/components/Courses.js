@@ -56,41 +56,44 @@ function Courses() {
       });
   }, []);
 
-  if (loading) return <div>Loading courses...</div>;
-  if (error) return <div>Error loading courses: {error}</div>;
+  if (loading) return <div className="loading-message">Loading courses...</div>;
+  if (error) return <div className="alert alert-danger error-message">Error loading courses: {error}</div>;
 
   return (
-    <div>
-      <h2>Yoga Courses</h2>
+    <div className="container mt-3">
+      <h2 className="page-title">Yoga Courses</h2>
+      {paymentError && <div className="alert alert-danger error-message mt-3">Payment Error: {paymentError}</div>}
       {courses.length === 0 ? (
-        <p>No courses found.</p>
+        <p className="text-center">No courses found.</p>
       ) : (
-        <ul>
+        <div className="item-list">
           {courses.map(course => (
-            <li key={course.id}>
+            <div key={course.id} className="item-card">
               <h3>{course.title}</h3>
               <p>{course.description}</p>
               <p><strong>Price:</strong> ${course.price}</p>
-              <h4>Poses:</h4>
+              <h5>Poses:</h5>
               {course.poses && course.poses.length > 0 ? (
-                <ul>
+                <ul className="list-styled mb-2">
                   {course.poses.map(pose => <li key={pose.id}>{pose.name}</li>)}
                 </ul>
               ) : <p>No poses listed for this course.</p>}
-              <h4>Breathing Exercises:</h4>
+              <h5>Breathing Exercises:</h5>
               {course.breathing_exercises && course.breathing_exercises.length > 0 ? (
-                <ul>
+                <ul className="list-styled mb-2">
                   {course.breathing_exercises.map(exercise => <li key={exercise.id}>{exercise.name}</li>)}
                 </ul>
               ) : <p>No breathing exercises listed for this course.</p>}
-              <button onClick={() => handleInitiatePayment(course.id)} className="btn btn-success mt-2">
+              <button
+                onClick={() => handleInitiatePayment(course.id)}
+                className="btn btn-success w-100" // Full width button
+              >
                 Buy Course (${course.price})
               </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-      {paymentError && <div className="alert alert-danger mt-3" role="alert">Payment Error: {paymentError}</div>}
     </div>
   );
 }
